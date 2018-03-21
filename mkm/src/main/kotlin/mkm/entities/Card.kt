@@ -1,4 +1,4 @@
-package mkm
+package mkm.entities
 
 import javax.persistence.*
 
