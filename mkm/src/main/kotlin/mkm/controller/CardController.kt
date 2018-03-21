@@ -29,9 +29,9 @@ class CardController(private val cardRepository: CardRepository,
         var cnt: Int? = resultCntParam.toIntOrNull()
         cnt = if (cnt == null || cnt < 1) 10 else cnt
         if (englishNameParam.isNullOrEmpty())
-            return cardRepository.findAll().toList().subList(0, cnt)
+            return cardRepository.findAll().toList().take(cnt)
         else
-            return cardRepository.findByEnglishName(englishNameParam).subList(0, cnt)
+            return cardRepository.findByEnglishName(englishNameParam).take(cnt)
     }
 
     @GetMapping("/cardCnt")

@@ -1,3 +1,16 @@
 body {
     padding: 10px;
 }
+
+#cardContainer {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.singleCards {
+    padding: 10px;
+}
+
+img:hover{
+    cursor: pointer;
+}

@@ -19,17 +19,62 @@ class CardService(private val cardRepository: CardRepository) {
                         "Field of Ruin",
                         "Schauplatz der Verheerung",
                         "/de/Magic/Products/Singles/Ixalan/Schauplatz+der+Verheerung",
-                        "/img/9e848a75683f5382fed04513a016340b/expansionicons/expicons.png"),
+                        "/img/7c85aa7f8132e0940a23d825f7b445fd/cards/Ixalan/field_of_ruin.jpg"),
                 Card(2,
                         "Unclaimed Territory",
                         "Unbeanspruchtes Territorium",
                         "/de/Magic/Products/Singles/Ixalan/Unbeanspruchtes+Territorium",
-                        "/img/9e848a75683f5382fed04513a016340b/expansionicons/expicons.png"),
+                        "/img/c33ff6f524a15735dd6f99ed95054876/cards/Ixalan/unclaimed_territory.jpg"),
                 Card(3,
                         "Island",
                         "Insel",
                         "/de/Magic/Products/Singles/Unstable/Insel",
-                        "/img/9e848a75683f5382fed04513a016340b/expansionicons/expicons.png"))
+                        "/img/640c9e1cb032649cee35d7bf2c95506f/cards/Unstable/island.jpg"),
+                Card(4,
+                        "Field of Ruin",
+                        "Schauplatz der Verheerung",
+                        "/de/Magic/Products/Singles/Ixalan/Schauplatz+der+Verheerung",
+                        "/img/7c85aa7f8132e0940a23d825f7b445fd/cards/Ixalan/field_of_ruin.jpg"),
+                Card(5,
+                        "Unclaimed Territory",
+                        "Unbeanspruchtes Territorium",
+                        "/de/Magic/Products/Singles/Ixalan/Unbeanspruchtes+Territorium",
+                        "/img/c33ff6f524a15735dd6f99ed95054876/cards/Ixalan/unclaimed_territory.jpg"),
+                Card(6,
+                        "Island",
+                        "Insel",
+                        "/de/Magic/Products/Singles/Unstable/Insel",
+                        "/img/640c9e1cb032649cee35d7bf2c95506f/cards/Unstable/island.jpg"),
+                Card(7,
+                        "Field of Ruin",
+                        "Schauplatz der Verheerung",
+                        "/de/Magic/Products/Singles/Ixalan/Schauplatz+der+Verheerung",
+                        "/img/7c85aa7f8132e0940a23d825f7b445fd/cards/Ixalan/field_of_ruin.jpg"),
+                Card(8,
+                        "Unclaimed Territory",
+                        "Unbeanspruchtes Territorium",
+                        "/de/Magic/Products/Singles/Ixalan/Unbeanspruchtes+Territorium",
+                        "/img/c33ff6f524a15735dd6f99ed95054876/cards/Ixalan/unclaimed_territory.jpg"),
+                Card(9,
+                        "Island",
+                        "Insel",
+                        "/de/Magic/Products/Singles/Unstable/Insel",
+                        "/img/640c9e1cb032649cee35d7bf2c95506f/cards/Unstable/island.jpg"),
+                Card(10,
+                "Field of Ruin",
+                "Schauplatz der Verheerung",
+                "/de/Magic/Products/Singles/Ixalan/Schauplatz+der+Verheerung",
+                "/img/7c85aa7f8132e0940a23d825f7b445fd/cards/Ixalan/field_of_ruin.jpg"),
+                Card(11,
+                        "Unclaimed Territory",
+                        "Unbeanspruchtes Territorium",
+                        "/de/Magic/Products/Singles/Ixalan/Unbeanspruchtes+Territorium",
+                        "/img/c33ff6f524a15735dd6f99ed95054876/cards/Ixalan/unclaimed_territory.jpg"),
+                Card(12,
+                        "Island",
+                        "Insel",
+                        "/de/Magic/Products/Singles/Unstable/Insel",
+                        "/img/640c9e1cb032649cee35d7bf2c95506f/cards/Unstable/island.jpg"))
 
         cardRepository.saveAll(cardTestDataList)
     }
@@ -56,7 +101,7 @@ class CardService(private val cardRepository: CardRepository) {
                         for (i in 1 until cardTrs.size) {
                             val cardTr = cardTrs[i]
                             if (cardTr.children().size >= 2) {
-                                var imgUrl = cardTr.child(1).child(0).child(0).child(0).attr("style")
+                                var imgUrl = cardTr.child(0).child(0).child(0).child(0).attr("style")
 
                                 val parts = imgUrl.split("[']".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                                 imgUrl = parts[1]
