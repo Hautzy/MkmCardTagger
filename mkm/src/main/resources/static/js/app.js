@@ -16,7 +16,7 @@ function createCard(c) {
 function loadCards() {
     var method = ""
     var name = $('#filterInput').val()
-    method = "/findByEnglishName?englishName=" + name
+    method = "/card/findByEnglishName?englishName=" + name
     $.ajax({
         url: server_url + method
     }).then(function(data) {

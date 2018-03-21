@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/card")
 class CardController(private val cardRepository: CardRepository,
                      private val cardService: CardService) {
 
