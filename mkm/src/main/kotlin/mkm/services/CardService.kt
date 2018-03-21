@@ -101,7 +101,7 @@ class CardService(private val cardRepository: CardRepository) {
                         for (i in 1 until cardTrs.size) {
                             val cardTr = cardTrs[i]
                             if (cardTr.children().size >= 2) {
-                                var imgUrl = cardTr.child(0).child(0).child(0).child(0).attr("style")
+                                var imgUrl = cardTr.child(0).child(0).child(0).attr("onmouseover")
 
                                 val parts = imgUrl.split("[']".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                                 imgUrl = parts[1]
