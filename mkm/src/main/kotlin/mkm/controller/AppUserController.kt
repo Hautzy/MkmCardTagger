@@ -2,15 +2,14 @@ package mkm.controller
 
 import mkm.entities.AppUser
 import mkm.repos.AppUserRepository
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/user")
-class AppUserController(private val appUserRepository: AppUserRepository) {
-    @GetMapping("findAll")
+@RequestMapping("/user")
+class AppUserController(private val appUserRepository: AppUserRepository,
+                        val bCryptPasswordEncoder: BCryptPasswordEncoder) {
+    @GetMapping("/findAll")
     fun findAll(): List<AppUser> = appUserRepository.findAll().toList()
 
     @GetMapping("/findById")
