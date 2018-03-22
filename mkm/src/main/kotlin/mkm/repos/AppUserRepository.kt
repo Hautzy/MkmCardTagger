@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AppUserRepository: CrudRepository<AppUser, Int> {
+interface AppUserRepository: CrudRepository<AppUser, Long> {
     fun findByUsername(username: String): AppUser
 }
