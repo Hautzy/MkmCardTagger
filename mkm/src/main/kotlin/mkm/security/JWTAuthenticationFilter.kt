@@ -48,6 +48,10 @@ class JWTAuthenticationFilter(authManager: AuthenticationManager) : UsernamePass
                 .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact()
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT)
+
+        var objectMapper = ObjectMapper()
+        objectMapper.writeValue(res.writer, (TOKEN_PREFIX + " " + JWT))
+
+        //es.addHeader(HEADER_STRING, )
     }
 }

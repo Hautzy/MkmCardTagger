@@ -14,4 +14,7 @@ class AppUserController(private val appUserRepository: AppUserRepository,
 
     @GetMapping("/findById")
     fun findById(@RequestParam("id") id: Long): AppUser = appUserRepository.findById(id).get()
+
+    @GetMapping("/checkToken")
+    fun checkToken(): String = "ok"
 }

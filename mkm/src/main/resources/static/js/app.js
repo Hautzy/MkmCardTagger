@@ -1,5 +1,7 @@
-var server_url = "http://localhost:8080/api"
+var server_url = "http://localhost:8080"
 var activeCards = []
+const mkm_token = "mkm_token"
+var mkm_token_val = ""
 
 function createCard(c) {
     var elementStr = `<div class="col-md-3 singleCards" id="card-${c.id}">
@@ -30,6 +32,17 @@ function loadCards() {
 }
 
 $(document).ready(function() {
+    if(localStorage.getItem(mkm_token) != null) {
+        var mkm_token_val = localStorage.getItem(mkm_token)
+        $.ajax({
+            headers: { 
+                "Authorization" : mkm_token_val
+            },
+            url: server_url + "/user/checkToken"
+        }).then(function(data) {
+            $('#logInLink').hide()
+        });
+    }
     $('#filterInput').on('input', function() {
         loadCards()
     })

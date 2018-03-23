@@ -1,0 +1,45 @@
+body {
+    padding: 10px;
+}
+
+.row{
+    padding: 2px;
+}
+
+.authTitle {
+    text-align: center;
+}
+
+button.toggleable {
+    opacity: 0.5;
+}
+
+button.toggled {
+    opacity: 1;
+}
+
+#btnLoginOk, #btnSignUpOk {
+    margin-top: 6px;
+}
+
+#btnContainer {
+    width: 200px;
+    margin-left: 45%;
+    margin-top: 2.5%;
+}
+
+#logInContainer, #signUpContainer {
+    padding: 20px;
+    width: 400px;
+    margin-left: 38%;
+    margin-top: 2.5%;
+}
+
+input {
+    margin-top: 4px;
+}
+
+#alertContainer, #alreadyLoggedIn {
+    text-align: center;
+    margin-top: 20px;
+}

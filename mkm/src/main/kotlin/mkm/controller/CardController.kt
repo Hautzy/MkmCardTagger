@@ -3,13 +3,11 @@ package mkm.controller
 import mkm.entities.Card
 import mkm.repos.CardRepository
 import mkm.services.CardService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/card")
+//
 class CardController(private val cardRepository: CardRepository,
                      private val cardService: CardService) {
 

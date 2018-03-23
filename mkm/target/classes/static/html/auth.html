@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../js/auth.js"></script>
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+
+<body>
+    <h1 class="authTitle">MkmCardTagger</h1>
+
+    <div id="btnContainer">
+        <button id="btnLogIn" class="btn btn-primary toggleable">Log in</button>
+        <button id="btnSignUp" class="btn btn-primary toggleable">Sign up</button>
+    </div>
+    <div id="logInContainer">
+        <input type="text" class="form-control" id="usernameLogInInput" placeholder="Enter username">
+        <input type="password" class="form-control" id="passwordLogInInput" placeholder="Enter password">
+        <button id="btnLoginOk" class="btn btn-primary">Login</button>
+    </div>
+
+    <div id="signUpContainer">
+        <input type="text" class="form-control" id="usernameInput" placeholder="Enter username">
+        <input type="text" class="form-control" id="emailInput" placeholder="Enter email">
+        <input type="password" class="form-control" id="passwordInput" placeholder="Enter password">
+        <button id="btnSignUpOk" class="btn btn-primary">Sign up</button>
+    </div>
+
+    <div id="alertContainer">
+        <h2 id="alertText"></h2>
+        
+        To the <a href="../index.html">main page</a>
+    </div>
+
+    <div id="alreadyLoggedIn">
+        <h2>You are already logged in!</h2>
+
+        To the <a href="../index.html">main page</a>
+    </div>
+</body>
+
+</html>
