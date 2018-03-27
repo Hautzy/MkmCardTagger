@@ -81,7 +81,7 @@ function login() {
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            var token = xhr.response
+            var token = xhr.response.substring(1, xhr.response.length - 1)
             localStorage.setItem(mkm_token, token)
             $('#alertText').html("Logged in!")
             $('#alertContainer').show()

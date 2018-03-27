@@ -111,7 +111,7 @@ class CardService(private val cardRepository: CardRepository) {
                                 val germanName = cardTr.child(3).child(0).html()
 
                                 var c = Card(cardCnt, englishName, germanName, detailUrl, imgUrl)
-                                out.println("${c.id};${c.englishName};${c.gerName};${c.detailUrl};${c.imgUrl}")
+                                out.println("${c.id}~${c.englishName}~${c.gerName}~${c.detailUrl}~${c.imgUrl}")
                                 cardCnt++
                                 println(cardCnt.toString() + " | " + englishName)
                             }
