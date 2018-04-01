@@ -3,14 +3,32 @@ body {
 }
 
 #cardContainer {
-    padding-left: 10px;
-    padding-top: 10px;
-}
-
-.singleCards {
-    padding: 10px;
+    width: 100%;
+    margin: 2em auto;
 }
 
 img:hover{
     cursor: pointer;
+}
+
+#container {
+    
+}
+.cols {
+    -moz-column-count:3;
+    -moz-column-gap: 3%;
+    -moz-column-width: 30%;
+    -webkit-column-count:3;
+    -webkit-column-gap: 3%;
+    -webkit-column-width: 30%;
+    column-count: 3;
+    column-gap: 3%;
+    column-width: 30%;
+}
+.box {
+    margin: 5px;
+    height:370px;
+    background:#BFBFBF;
+    padding: 5px;
+    width: 265px;
 }

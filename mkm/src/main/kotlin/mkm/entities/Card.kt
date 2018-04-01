@@ -1,5 +1,6 @@
 package mkm.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity
@@ -11,7 +12,8 @@ data class Card(
         val germanName: String = "",
         val detailUrl: String = "",
         val imgUrl: String = "",
-        @OneToMany(mappedBy = "card", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+        @JsonIgnore
+        @OneToMany(mappedBy = "card", cascade = arrayOf(CascadeType.ALL))
         val cardExpansions: MutableList<CardExpansion> = mutableListOf()
 ) {
 }

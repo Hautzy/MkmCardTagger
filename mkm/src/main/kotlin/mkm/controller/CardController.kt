@@ -3,6 +3,9 @@ package mkm.controller
 import mkm.entities.Card
 import mkm.repos.CardRepository
 import mkm.services.CardService
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,17 +21,27 @@ class CardController(private val cardRepository: CardRepository,
     }
 
     @GetMapping("/findAll")
-    fun findAll(): List<Card> = cardRepository.findAll().toList()
+    fun findAll(@RequestParam(value = "page", required = true) page: Int,
+                @RequestParam(value = "limit", required = true) limit: Int): List<Card> {
+        val sort = Sort(Sort.Direction.ASC, "englishName")
+        val pageable = PageRequest(page, limit, sort)
+        val cards = cardRepository.findAll(pageable)
+        return cards.content
+    }
 
     @GetMapping("/findByEnglishName")
     fun findByEnglishName(@RequestParam(value = "englishName", defaultValue = "") englishNameParam: String,
-                          @RequestParam(value = "resultCnt", defaultValue = "10") resultCntParam: String): List<Card> {
-        var cnt: Int? = resultCntParam.toIntOrNull()
-        cnt = if (cnt == null || cnt < 1) 10 else cnt
-        if (englishNameParam.isNullOrEmpty())
-            return cardRepository.findAll().toList().take(cnt)
+                          @RequestParam(value = "page", required = true) page: Int,
+                          @RequestParam(value = "limit", required = true) limit: Int): List<Card> {
+        val sort = Sort(Sort.Direction.ASC, "englishName")
+        val pageable = PageRequest(page, limit, sort)
+        var cards: List<Card>
+
+        if (englishNameParam.isEmpty())
+            return cardRepository.findAll(pageable).content
         else
-            return cardRepository.findByEnglishName(englishNameParam).take(cnt)
+            cards = cardRepository.findByEnglishName(englishNameParam, pageable).content
+        return cards
     }
 
     @GetMapping("/cardCnt")

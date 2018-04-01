@@ -14,6 +14,6 @@ class InitBean(val cardService: CardService,
     fun init() {
         print("***********INIT***********")
         //cardService.initTestData()
-        //appUserService.initTestData()
+        appUserService.initTestData()
     }
 }

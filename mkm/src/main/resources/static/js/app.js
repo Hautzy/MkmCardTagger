@@ -4,12 +4,8 @@ const mkm_token = "mkm_token"
 var mkm_token_val = ""
 
 function createCard(c) {
-    var elementStr = `<div class="col-md-3 singleCards" id="card-${c.id}">
-            <div class="row">
-                <div class="col-md-3">
+    var elementStr = `<div class="box" id="card-${c.id}">
                     <img src="https://www.cardmarket.com/de/Magic${c.imgUrl}">
-                </div>
-            </div>
         </div>`
     var cardHtml = $(elementStr)
     $('#cardContainer').append(cardHtml)
@@ -18,7 +14,7 @@ function createCard(c) {
 function loadCards() {
     var method = ""
     var name = $('#filterInput').val()
-    method = "/card/findByEnglishName?englishName=" + name
+    method = "/card/findByEnglishName?page=0&limit=30&englishName=" + name
     $.ajax({
         url: server_url + method
     }).then(function(data) {
