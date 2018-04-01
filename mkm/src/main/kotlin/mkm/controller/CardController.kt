@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/card")
-//
 class CardController(private val cardRepository: CardRepository,
                      private val cardService: CardService) {
 
@@ -36,8 +35,11 @@ class CardController(private val cardRepository: CardRepository,
     fun cardCnt(): Int = cardService.countOfCards()
 
     @GetMapping("/loadToCsv")
-    fun loadToCsv(): Long {
-        return cardService.locaToCsv()
+    fun loadToCsv(): Long = cardService.locaToCsv()
+
+    @GetMapping("/persistCsv")
+    fun persistCsv(@RequestParam(value = "from") from: Int): Int {
+        return cardService.persistCsv(from)
     }
 
 }

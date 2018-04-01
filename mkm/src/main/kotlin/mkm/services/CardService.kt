@@ -1,11 +1,13 @@
 package mkm.services
 
 import mkm.entities.Card
+import mkm.entities.Expansion
 import mkm.repos.CardRepository
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.sql.SQLException
 
 @Service
@@ -61,10 +63,10 @@ class CardService(private val cardRepository: CardRepository) {
                         "/de/Magic/Products/Singles/Unstable/Insel",
                         "/img/640c9e1cb032649cee35d7bf2c95506f/cards/Unstable/island.jpg"),
                 Card(10,
-                "Field of Ruin",
-                "Schauplatz der Verheerung",
-                "/de/Magic/Products/Singles/Ixalan/Schauplatz+der+Verheerung",
-                "/img/7c85aa7f8132e0940a23d825f7b445fd/cards/Ixalan/field_of_ruin.jpg"),
+                        "Field of Ruin",
+                        "Schauplatz der Verheerung",
+                        "/de/Magic/Products/Singles/Ixalan/Schauplatz+der+Verheerung",
+                        "/img/7c85aa7f8132e0940a23d825f7b445fd/cards/Ixalan/field_of_ruin.jpg"),
                 Card(11,
                         "Unclaimed Territory",
                         "Unbeanspruchtes Territorium",
@@ -79,7 +81,7 @@ class CardService(private val cardRepository: CardRepository) {
         cardRepository.saveAll(cardTestDataList)
     }
 
-    fun countOfCards(): Int{
+    fun countOfCards(): Int {
         val doc = Jsoup.connect(LIST_URL + 0).get()
         var cntElement = doc.getElementById("hitCountBottom")
         var cntOfCards = cntElement.html().toInt()
@@ -111,7 +113,7 @@ class CardService(private val cardRepository: CardRepository) {
                                 val germanName = cardTr.child(3).child(0).html()
 
                                 var c = Card(cardCnt, englishName, germanName, detailUrl, imgUrl)
-                                out.println("${c.id}~${c.englishName}~${c.gerName}~${c.detailUrl}~${c.imgUrl}")
+                                out.println("${c.id}~${c.englishName}~${c.germanName}~${c.detailUrl}~${c.imgUrl}")
                                 cardCnt++
                                 println(cardCnt.toString() + " | " + englishName)
                             }
@@ -128,5 +130,32 @@ class CardService(private val cardRepository: CardRepository) {
             e.printStackTrace()
         }
         return cardCnt
+    }
+
+    fun persistCsv(from: Int): Int {
+        val inputStream: InputStream = File("cards.csv").inputStream()
+        cardRepository.deleteAll()
+        var curIndex = 0
+        println("Cards all deleted!")
+
+        inputStream.bufferedReader().useLines { lines ->
+            lines.forEach {
+                print(curIndex)
+                if(curIndex >= from) {
+                    val parts = it.split("~")
+                    val card = Card(id = parts[0].toLong(),
+                            englishName = parts[1],
+                            germanName = parts[2],
+                            detailUrl = parts[3],
+                            imgUrl = parts[4])
+                    cardRepository.save(card)
+                    println(parts)
+                } else {
+                    println(" - nope")
+                }
+                curIndex++
+            }
+            return 1
+        }
     }
 }

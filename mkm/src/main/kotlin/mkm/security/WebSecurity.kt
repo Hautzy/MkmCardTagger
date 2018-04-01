@@ -31,6 +31,7 @@ open class WebSecurity(val userDetailsService: UserDetailsServiceImpl) : WebSecu
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/sign-up").permitAll()
                     .antMatchers(HttpMethod.GET, "/card/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/expansion/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .addFilter(JWTAuthenticationFilter(authenticationManager()))

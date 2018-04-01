@@ -13,7 +13,7 @@ class InitBean(val cardService: CardService,
     @PostConstruct
     fun init() {
         print("***********INIT***********")
-        cardService.initTestData()
-        appUserService.initTestData()
+        //cardService.initTestData()
+        //appUserService.initTestData()
     }
 }
