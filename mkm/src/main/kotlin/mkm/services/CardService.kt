@@ -1,7 +1,6 @@
 package mkm.services
 
 import mkm.entities.Card
-import mkm.entities.Expansion
 import mkm.repos.CardRepository
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service

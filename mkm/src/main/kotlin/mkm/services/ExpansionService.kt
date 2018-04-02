@@ -6,19 +6,69 @@ import mkm.entities.Expansion
 import mkm.repos.CardExpansionRepository
 import mkm.repos.CardRepository
 import mkm.repos.ExpansionRepository
+import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import java.net.URLDecoder
-import java.net.URLEncoder
 
 @Service
 class ExpansionService(private val expansionRepository: ExpansionRepository,
                        private val cardExpansionRepository: CardExpansionRepository,
                        private val cardRepository: CardRepository) {
-    fun createExpansions(): Int {
+    val MAGIC_URL: String = "https://www.cardmarket.com"
+    val EXPANSION_URL: String = "https://www.cardmarket.com/de/Magic/Expansions"
+    val EXPANSION_SYMBOL_URL: String = "/img/3971507472eb0e9038fa4c4a70317aa2/expansionicons/expicons.png"
+
+    fun createExpansionsFromWebsite(): Int {
+        val expansions: MutableList<Expansion> = mutableListOf()
+
+        val doc = Jsoup.connect(EXPANSION_URL).get()
+        val expansionContainers = doc.getElementsByClass("alphabeticExpansion")
+
+        expansionContainers.forEach { it ->
+            val detailUrl = it.attr("href")
+
+            val parts = it.child(0).child(0).attr("style").split(";")
+            val symbolPosition = parts[parts.count() - 2]
+
+            val subDoc = Jsoup.connect(MAGIC_URL + detailUrl).get()
+            val subCreationDateContainer = subDoc.getElementsByClass("bannerExpRelease")[0]
+            val subCardCntContainer = subDoc.getElementsByClass("bannerExpCardNr")[0]
+            val subNameContainers = subDoc.getElementsByClass("expTitle")
+
+            val creationDateString = subCreationDateContainer.child(1).text() + " " +
+                    subCreationDateContainer.child(2).text() + " " +
+                    subCreationDateContainer.child(3).text()
+
+            val cardCnt = subCardCntContainer.child(0).attr("alt").toInt()
+
+            var englishName: String
+            var germanName: String
+
+            if(subNameContainers.count() > 2) {
+                germanName = subNameContainers.get(1).text()
+                englishName = subNameContainers.get(2).text()
+            } else {
+                germanName = subNameContainers.get(1).text()
+                englishName = germanName
+            }
+
+            val expansion = Expansion(id = 0, englishName = englishName, germanName = germanName, detailUrl = detailUrl,
+                    creationDate = creationDateString,
+                    numberOfCards = cardCnt,
+                    symbolPosition = symbolPosition)
+            expansions.add(expansion)
+            println("${expansions.count() + 1}) ${expansion.germanName} | ${expansion.englishName}")
+        }
+        expansionRepository.saveAll(expansions)
+
+        return expansions.count()
+    }
+
+    fun createExpansionsFromCards(): Int {
         val cards: MutableIterable<Card> = cardRepository.findAll()
         val expansions: MutableList<Expansion> = mutableListOf()
 
-        cards.forEach { it -> checkForDoubles(it, expansions)}
+        cards.forEach { it -> checkForDoubles(it, expansions) }
 
         expansionRepository.saveAll(expansions)
         return expansions.count()
@@ -36,8 +86,9 @@ class ExpansionService(private val expansionRepository: ExpansionRepository,
         print(expansionName)
 
         val results = expansions.filter { e ->
-            e.englishName.compareTo(expansionName, true) == 0 }
-        if(results.count() == 0) {
+            e.englishName.compareTo(expansionName, true) == 0
+        }
+        if (results.count() == 0) {
             val e = Expansion(id = 0, englishName = expansionName)
             expansions.add(e)
             e.cardExpansions.add(CardExpansion(card = card, expansion = e))

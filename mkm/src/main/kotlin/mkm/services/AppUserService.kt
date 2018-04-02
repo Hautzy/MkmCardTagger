@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 class AppUserService(private val appUserRepository: AppUserRepository,
                      val bCryptPasswordEncoder: BCryptPasswordEncoder) {
     fun initTestData() {
+        appUserRepository.deleteAll()
         var testData = arrayListOf(
                 AppUser(0 ,
                         "Hautzy",
