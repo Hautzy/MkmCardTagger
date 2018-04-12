@@ -1,5 +1,6 @@
 package mkm.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity
@@ -10,6 +11,9 @@ data class AppUser(
         val username: String = "",
         @Column(unique = true)
         var email: String = "",
-        var password: String = ""
+        var password: String = "",
+        @JsonIgnore
+        @OneToMany(mappedBy = "appUser", cascade = arrayOf(CascadeType.ALL))
+        val tags: MutableList<Tag> = mutableListOf()
 ) {
 }

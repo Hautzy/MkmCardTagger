@@ -20,10 +20,18 @@
             <input type="text" class="form-control" id="filterInput" placeholder="Enter card name">
         </div>
         <div class="col-md-2">
-            <button id="clicker" class="btn btn-success">Load</button>
+            <select id="expansions">
+                <option value="0">All</option>
+            </select>
         </div>
     </div>
-    <div class="row" id="cardContainer" class="row">
+    <div class="row" id="cardContainer">
+    </div>
+    <div class="row" id="pagingContainer">
+        <div class="col-md-12">
+            <button id="backPagingBtn" class="btn btn-success">before</button>
+            <button id="nextPagingBtn" class="btn btn-success">next</button>
+        </div>
     </div>
 </body>
 </html>

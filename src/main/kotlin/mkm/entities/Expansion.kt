@@ -18,5 +18,4 @@ data class Expansion(
         @OneToMany(mappedBy = "expansion", cascade = arrayOf(CascadeType.ALL))
         val cardExpansions: MutableList<CardExpansion> = mutableListOf()
 ) {
-
 }

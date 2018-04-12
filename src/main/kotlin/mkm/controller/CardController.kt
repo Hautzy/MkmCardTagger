@@ -31,17 +31,25 @@ class CardController(private val cardRepository: CardRepository,
 
     @GetMapping("/findByEnglishName")
     fun findByEnglishName(@RequestParam(value = "englishName", defaultValue = "") englishNameParam: String,
+                          @RequestParam(value = "expansion", required = true) expansion: Long,
                           @RequestParam(value = "page", required = true) page: Int,
                           @RequestParam(value = "limit", required = true) limit: Int): List<Card> {
         val sort = Sort(Sort.Direction.ASC, "englishName")
         val pageable = PageRequest(page, limit, sort)
-        var cards: List<Card>
+        var cards: List<Card> = emptyList()
 
-        if (englishNameParam.isEmpty())
-            return cardRepository.findAll(pageable).content
-        else
-            cards = cardRepository.findByEnglishName(englishNameParam, pageable).content
-        return cards
+        if(expansion == 0L) {
+            if (englishNameParam.isEmpty())
+                return cardRepository.findAll(pageable).content
+            else
+                return cardRepository.findByEnglishName(englishNameParam, pageable).content
+        } else {
+            if (englishNameParam.isEmpty())
+                return cardRepository.findAllByExpansion(expansion, pageable).content
+            else
+                cards = cardRepository.findByEnglishNameAndExpansion(englishNameParam, expansion, pageable).content
+            return cards
+        }
     }
 
     @GetMapping("/cardCnt")

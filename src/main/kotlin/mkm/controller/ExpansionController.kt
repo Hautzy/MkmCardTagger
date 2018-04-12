@@ -17,8 +17,8 @@ class ExpansionController(private val expansionRepository: ExpansionRepository,
                           private val expansionService: ExpansionService) {
 
     @GetMapping("connectExpansionsAndCards")
-    fun connectExpansionsAndCards() {
-        //TODO: add cards to expansions
+    fun connectExpansionsAndCards(): Int {
+        return expansionService.connectExpansionAndCards()
     }
 
     @GetMapping("createExpansionsFromWebsite")
@@ -36,6 +36,13 @@ class ExpansionController(private val expansionRepository: ExpansionRepository,
         val pageable = PageRequest(page, limit, sort)
         val expansions = expansionRepository.findAll(pageable)
         return expansions.content
+    }
+
+    @GetMapping("findAllNames")
+    fun findAllNames(): HashMap<Long, Array<String>> {
+        val names = HashMap<Long, Array<String>>()
+        expansionRepository.findAll().forEach { e -> names.put(e.id, arrayOf(e.englishName, e.germanName)) }
+        return names
     }
 
     @GetMapping("findByEnglishName")

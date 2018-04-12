@@ -14,6 +14,9 @@ data class Card(
         val imgUrl: String = "",
         @JsonIgnore
         @OneToMany(mappedBy = "card", cascade = arrayOf(CascadeType.ALL))
-        val cardExpansions: MutableList<CardExpansion> = mutableListOf()
+        val cardExpansions: MutableList<CardExpansion> = mutableListOf(),
+        @JsonIgnore
+        @OneToMany(mappedBy = "card", cascade = arrayOf(CascadeType.ALL))
+        val tags: MutableList<Tag> = mutableListOf()
 ) {
 }

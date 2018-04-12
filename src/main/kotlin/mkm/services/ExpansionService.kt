@@ -21,43 +21,47 @@ class ExpansionService(private val expansionRepository: ExpansionRepository,
     fun createExpansionsFromWebsite(): Int {
         val expansions: MutableList<Expansion> = mutableListOf()
 
-        val doc = Jsoup.connect(EXPANSION_URL).get()
+        val doc = Jsoup.connect(EXPANSION_URL).timeout(10*1000).get()
         val expansionContainers = doc.getElementsByClass("alphabeticExpansion")
 
         expansionContainers.forEach { it ->
-            val detailUrl = it.attr("href")
+            try {
+                val detailUrl = it.attr("href")
 
-            val parts = it.child(0).child(0).attr("style").split(";")
-            val symbolPosition = parts[parts.count() - 2]
+                val parts = it.child(0).child(0).attr("style").split(";")
+                val symbolPosition = parts[parts.count() - 2]
 
-            val subDoc = Jsoup.connect(MAGIC_URL + detailUrl).get()
-            val subCreationDateContainer = subDoc.getElementsByClass("bannerExpRelease")[0]
-            val subCardCntContainer = subDoc.getElementsByClass("bannerExpCardNr")[0]
-            val subNameContainers = subDoc.getElementsByClass("expTitle")
+                val subDoc = Jsoup.connect(MAGIC_URL + detailUrl).timeout(10*10000).get()
+                val subCreationDateContainer = subDoc.getElementsByClass("bannerExpRelease")[0]
+                val subCardCntContainer = subDoc.getElementsByClass("bannerExpCardNr")[0]
+                val subNameContainers = subDoc.getElementsByClass("expTitle")
 
-            val creationDateString = subCreationDateContainer.child(1).text() + " " +
-                    subCreationDateContainer.child(2).text() + " " +
-                    subCreationDateContainer.child(3).text()
+                val creationDateString = subCreationDateContainer.child(1).text() + " " +
+                        subCreationDateContainer.child(2).text() + " " +
+                        subCreationDateContainer.child(3).text()
 
-            val cardCnt = subCardCntContainer.child(0).attr("alt").toInt()
+                val cardCnt = subCardCntContainer.child(0).attr("alt").toInt()
 
-            var englishName: String
-            var germanName: String
+                var englishName: String
+                var germanName: String
 
-            if(subNameContainers.count() > 2) {
-                germanName = subNameContainers.get(1).text()
-                englishName = subNameContainers.get(2).text()
-            } else {
-                germanName = subNameContainers.get(1).text()
-                englishName = germanName
+                if (subNameContainers.count() > 2) {
+                    germanName = subNameContainers.get(1).text()
+                    englishName = subNameContainers.get(2).text()
+                } else {
+                    germanName = subNameContainers.get(1).text()
+                    englishName = germanName
+                }
+
+                val expansion = Expansion(id = 0, englishName = englishName, germanName = germanName, detailUrl = detailUrl,
+                        creationDate = creationDateString,
+                        numberOfCards = cardCnt,
+                        symbolPosition = symbolPosition)
+                expansions.add(expansion)
+                println("${expansions.size}) ${expansion.germanName} | ${expansion.englishName}")
+            }catch (e: Exception) {
+                println(e)
             }
-
-            val expansion = Expansion(id = 0, englishName = englishName, germanName = germanName, detailUrl = detailUrl,
-                    creationDate = creationDateString,
-                    numberOfCards = cardCnt,
-                    symbolPosition = symbolPosition)
-            expansions.add(expansion)
-            println("${expansions.size}) ${expansion.germanName} | ${expansion.englishName}")
         }
         expansionRepository.saveAll(expansions)
 
@@ -95,5 +99,24 @@ class ExpansionService(private val expansionRepository: ExpansionRepository,
         } else {
             results[0].cardExpansions.add(CardExpansion(card = card, expansion = results[0]))
         }
+    }
+
+    fun connectExpansionAndCards(): Int {
+        cardExpansionRepository.deleteAll()
+        val expansions = expansionRepository.findAll()
+
+        for(exp in expansions) {
+            val parts = exp.detailUrl.split("/")
+            val cards = cardRepository.findByUrlExpansion("%${parts[parts.size - 1]}%")
+            val cardExpansions = mutableListOf<CardExpansion>()
+            for (card in cards) {
+                val cardExpansion = CardExpansion(card = card, expansion = exp)
+                cardExpansions.add(cardExpansion)
+            }
+            cardExpansionRepository.saveAll(cardExpansions)
+            println("${exp.englishName}")
+        }
+
+        return 0
     }
 }

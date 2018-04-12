@@ -28,7 +28,7 @@ img:hover{
 .box {
     margin: 5px;
     height:370px;
-    background:#BFBFBF;
+    /*background:#BFBFBF;*/
     padding: 5px;
     width: 265px;
 }

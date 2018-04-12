@@ -2,6 +2,8 @@ var server_url = "http://localhost:8080"
 var activeCards = []
 const mkm_token = "mkm_token"
 var mkm_token_val = ""
+var page = 0
+var expansions = []
 
 function createCard(c) {
     var elementStr = `<div class="box" id="card-${c.id}">
@@ -11,10 +13,28 @@ function createCard(c) {
     $('#cardContainer').append(cardHtml)
 }
 
-function loadCards() {
+function loadExpansions() {
+    var method = ""
+    method = "/expansion/findAllNames"
+    $.ajax({
+        url: server_url + method
+    }).then(function(data) {
+        expansions = data
+        for (const e in data) {
+            console.log(data[e])
+            $('#expansions').append($('<option>', {
+                value: e,
+                text: data[e][0]
+            }));
+        }
+    });
+}
+
+function loadCards(page) {
     var method = ""
     var name = $('#filterInput').val()
-    method = "/card/findByEnglishName?page=0&limit=30&englishName=" + name
+    var expansion = $('#expansions').val()
+    method = "/card/findByEnglishName?page=" + page + "&limit=30&englishName=" + name + "&expansion=" + expansion
     $.ajax({
         url: server_url + method
     }).then(function(data) {
@@ -24,10 +44,18 @@ function loadCards() {
             createCard(data[i])
         }
         console.log(data)
+        if(data.length == 0) {
+            page--
+            loadCards(page)
+        }
     });
 }
 
 $(document).ready(function() {
+    loadExpansions()
+    $( "#expansions" ).change(function() {
+        loadCards(page)
+    });
     if(localStorage.getItem(mkm_token) != null) {
         var mkm_token_val = localStorage.getItem(mkm_token)
         $.ajax({
@@ -40,7 +68,19 @@ $(document).ready(function() {
         });
     }
     $('#filterInput').on('input', function() {
-        loadCards()
+        page = 0
+        loadCards(page)
     })
-    loadCards()
+    $("#backPagingBtn").click(function() {
+        page--
+        if(page < 0)
+            page = 0
+        loadCards(page)
+    })
+    $("#nextPagingBtn").click(function() {
+        page++
+        loadCards(page)
+    })
+    page = 0
+    loadCards(page)
 })
