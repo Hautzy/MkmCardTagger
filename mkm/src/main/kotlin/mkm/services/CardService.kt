@@ -142,7 +142,7 @@ class CardService(private val cardRepository: CardRepository) {
                 print(curIndex)
                 if(curIndex >= from) {
                     val parts = it.split("~")
-                    val card = Card(id = parts[0].toLong(),
+                    val card = Card(id = 0,
                             englishName = parts[1],
                             germanName = parts[2],
                             detailUrl = parts[3],

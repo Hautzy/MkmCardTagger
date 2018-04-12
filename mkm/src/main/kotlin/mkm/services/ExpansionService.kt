@@ -57,11 +57,11 @@ class ExpansionService(private val expansionRepository: ExpansionRepository,
                     numberOfCards = cardCnt,
                     symbolPosition = symbolPosition)
             expansions.add(expansion)
-            println("${expansions.count() + 1}) ${expansion.germanName} | ${expansion.englishName}")
+            println("${expansions.size}) ${expansion.germanName} | ${expansion.englishName}")
         }
         expansionRepository.saveAll(expansions)
 
-        return expansions.count()
+        return expansions.size
     }
 
     fun createExpansionsFromCards(): Int {

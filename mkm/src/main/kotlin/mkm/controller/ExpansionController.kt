@@ -3,6 +3,7 @@ package mkm.controller
 import mkm.entities.Expansion
 import mkm.repos.ExpansionRepository
 import mkm.services.ExpansionService
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.GetMapping
@@ -32,8 +33,22 @@ class ExpansionController(private val expansionRepository: ExpansionRepository,
     fun findAll(@RequestParam(value = "page", required = true) page: Int,
                 @RequestParam(value = "limit", required = true) limit: Int): List<Expansion> {
         val sort = Sort(Sort.Direction.ASC, "englishName")
-        var pageable = PageRequest(page, limit, sort)
-        val expansion = expansionRepository.findAll(pageable)
-        return expansion.content
+        val pageable = PageRequest(page, limit, sort)
+        val expansions = expansionRepository.findAll(pageable)
+        return expansions.content
+    }
+
+    @GetMapping("findByEnglishName")
+    fun findByEnglishName(@RequestParam(value = "englishName", required = true) englishName: String,
+                          @RequestParam(value = "page", required = true) page: Int,
+                          @RequestParam(value = "limit", required = true) limit: Int): List<Expansion> {
+        val sort = Sort(Sort.Direction.ASC, "englishName")
+        val pageable = PageRequest(page, limit, sort)
+        val expansions: Page<Expansion>
+        if(englishName.isEmpty())
+            expansions = expansionRepository.findAll(pageable)
+        else
+            expansions = expansionRepository.findByEnglishName(englishName, pageable)
+        return expansions.content
     }
 }
